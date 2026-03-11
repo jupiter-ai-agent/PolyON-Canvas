@@ -1,0 +1,88 @@
+# PolyON-Canvas (AFFiNE) — Storage-first(only) RustFS, PRC 기반
+apiVersion: polyon.io/v1
+kind: Module
+
+metadata:
+  id: canvas
+  name: PolyON Canvas
+  version: "0.1.0"
+  category: engine
+  description: "지식베이스·화이트보드·문서 통합 (AFFiNE) — PolyON RustFS 필수, AD/Keycloak SSO"
+  icon: Document
+  vendor: "Triangle.s"
+  license: MIT
+
+spec:
+  engine: canvas
+
+  # PRC: DB, Redis, ObjectStorage(RustFS 필수), SMTP, Auth
+  claims:
+    - type: database
+      config:
+        name: canvas
+    - type: objectStorage
+      config:
+        bucket: canvas
+    - type: smtp
+      config:
+        domain: canvas
+    - type: auth
+      config:
+        clientId: canvas
+    # Redis는 플랫폼 공용; common-config 또는 별도 claim으로 주입
+
+  resources:
+    image: ghcr.io/toeverything/affine:stable
+    replicas: 1
+    ports:
+      - name: http
+        containerPort: 3010
+    health:
+      path: /
+      port: 3010
+      initialDelay: 30
+      period: 10
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: "2"
+        memory: 2Gi
+
+  env:
+    # Database (Postgres) — AFFiNE 공식 env
+    DATABASE_URL: "postgresql://{{ claims.database.user }}:{{ claims.database.password }}@{{ claims.database.host }}:{{ claims.database.port }}/{{ claims.database.database }}"
+    DB_HOST: "{{ claims.database.host }}"
+    DB_PORT: "{{ claims.database.port }}"
+    DB_USERNAME: "{{ claims.database.user }}"
+    DB_PASSWORD: "{{ claims.database.password }}"
+    DB_DATABASE: "{{ claims.database.database }}"
+
+    # Redis (플랫폼 공용 — polyon-common-config 또는 Operator가 주입)
+    REDIS_SERVER_HOST: "polyon-redis"
+    REDIS_SERVER_PORT: "6379"
+
+    # 이메일 (SMTP)
+    MAILER_HOST: "{{ claims.smtp.host }}"
+    MAILER_PORT: "{{ claims.smtp.port }}"
+    MAILER_USER: "{{ claims.smtp.user }}"
+    MAILER_PASSWORD: "{{ claims.smtp.password }}"
+    MAILER_SENDER: "canvas@{{ baseDomain }}"
+
+    # 서버 (Ingress 기준)
+    AFFINE_SERVER_HOST: "canvas.{{ baseDomain }}"
+    AFFINE_SERVER_PORT: "3010"
+    AFFINE_SERVER_HTTPS: "true"
+    AFFINE_SERVER_EXTERNAL_URL: "https://canvas.{{ baseDomain }}"
+
+    # Storage-first(only): RustFS 설정 — AFFiNE은 Admin Panel JSON으로 받음. 초기 주입 스크립트에서 사용할 env (선택)
+    AFFINE_STORAGE_PROVIDER: "aws-s3"
+    AFFINE_STORAGE_ENDPOINT: "{{ claims.objectStorage.endpoint }}"
+    AFFINE_STORAGE_BUCKET: "{{ claims.objectStorage.bucket }}"
+    AFFINE_STORAGE_ACCESS_KEY: "{{ claims.objectStorage.accessKey }}"
+    AFFINE_STORAGE_SECRET_KEY: "{{ claims.objectStorage.secretKey }}"
+
+  ingress:
+    subdomain: canvas
+    port: 3010
