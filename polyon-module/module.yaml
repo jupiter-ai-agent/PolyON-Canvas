@@ -51,7 +51,7 @@ spec:
         memory: 2Gi
 
   env:
-    # Database (Postgres) — AFFiNE 공식 env
+    # Database (Postgres) — AFFiNE 공식 env + SDK 표준 env
     DATABASE_URL: "postgresql://{{ claims.database.user }}:{{ claims.database.password }}@{{ claims.database.host }}:{{ claims.database.port }}/{{ claims.database.database }}"
     DB_HOST: "{{ claims.database.host }}"
     DB_PORT: "{{ claims.database.port }}"
@@ -62,6 +62,10 @@ spec:
     # Redis (플랫폼 공용 — polyon-common-config 또는 Operator가 주입)
     REDIS_SERVER_HOST: "polyon-redis"
     REDIS_SERVER_PORT: "6379"
+    # SDK 표준 Redis env
+    REDIS_HOST: "polyon-redis"
+    REDIS_PORT: "6379"
+    REDIS_DB: "0"
 
     # 이메일 (SMTP)
     MAILER_HOST: "{{ claims.smtp.host }}"
@@ -69,6 +73,11 @@ spec:
     MAILER_USER: "{{ claims.smtp.user }}"
     MAILER_PASSWORD: "{{ claims.smtp.password }}"
     MAILER_SENDER: "canvas@{{ baseDomain }}"
+    # SDK 표준 SMTP env
+    SMTP_HOST: "{{ claims.smtp.host }}"
+    SMTP_PORT: "{{ claims.smtp.port }}"
+    SMTP_USER: "{{ claims.smtp.user }}"
+    SMTP_PASSWORD: "{{ claims.smtp.password }}"
 
     # 서버 (Ingress 기준)
     AFFINE_SERVER_HOST: "canvas.{{ baseDomain }}"
@@ -82,6 +91,11 @@ spec:
     AFFINE_STORAGE_BUCKET: "{{ claims.objectStorage.bucket }}"
     AFFINE_STORAGE_ACCESS_KEY: "{{ claims.objectStorage.accessKey }}"
     AFFINE_STORAGE_SECRET_KEY: "{{ claims.objectStorage.secretKey }}"
+    # SDK 표준 S3 env
+    S3_ENDPOINT: "{{ claims.objectStorage.endpoint }}"
+    S3_BUCKET: "{{ claims.objectStorage.bucket }}"
+    S3_ACCESS_KEY: "{{ claims.objectStorage.accessKey }}"
+    S3_SECRET_KEY: "{{ claims.objectStorage.secretKey }}"
 
   ingress:
     subdomain: canvas

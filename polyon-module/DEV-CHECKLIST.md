@@ -2,7 +2,7 @@
 
 ## 완료
 
-- [x] Odoo 스타일 repo (원본 AFFiNE 소스 미포함)
+- [x] AppEngine 스타일 repo (원본 AFFiNE 소스 미포함)
 - [x] Dockerfile: 공식 이미지 `ghcr.io/toeverything/affine:stable` + entrypoint
 - [x] entrypoint: Postgres/Redis TCP 대기, DATABASE_URL 조합, `exec "$@"`
 - [x] module.yaml: PRC (database, objectStorage, smtp, auth), env 매핑

@@ -3,7 +3,7 @@
 **AFFiNE**을 [PolyON Platform](https://github.com/jupiter-ai-agent/PolyON-platform) 모듈로 동작하도록 구성한 저장소입니다.  
 업스트림: [toeverything/AFFiNE](https://github.com/toeverything/AFFiNE).
 
-**저장소 운영 방식**: [PolyON-Odoo](https://github.com/jupiter-ai-agent/PolyON-Odoo)와 동일하게 **AFFiNE 원본 소스는 포함하지 않습니다.** 공식 이미지를 베이스로 하고, PolyON용 래퍼(Dockerfile, entrypoint, polyon-module)만 두어 원본 터치 없이 업스트림 갱신을 유지합니다.
+**저장소 운영 방식**: [PolyON-AppEngine](https://github.com/jupiter-ai-agent/PolyON-AppEngine)과 동일하게 **AFFiNE 원본 소스는 포함하지 않습니다.** 공식 이미지를 베이스로 하고, PolyON용 래퍼(Dockerfile, entrypoint, polyon-module)만 두어 원본 터치 없이 업스트림 갱신을 유지합니다.
 
 ## Storage-first(only)
 

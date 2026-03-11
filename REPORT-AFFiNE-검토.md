@@ -58,7 +58,7 @@ AFFiNE은 **local-first**로, 사용자 디스크·로컬 저장소를 전제로
   - Admin Panel에서 사용자가 Storage를 fs로 바꾸지 못하도록 하거나, 재기동 시 항상 RustFS 설정으로 덮어쓰는 정책을 고려한다 (구현 단계에서 결정).
 - **원본 터치 여부**: **터치 불필요.** AFFiNE은 이미 Admin Panel → Storage에서 **aws-s3 호환** 스토리지를 지원한다. RustFS(S3 호환) 엔드포인트·버킷·자격증명을 **설정(초기 주입)** 으로 넣어 주면 되며, 소스 코드 수정 없이 설정만으로 Storage-first(only)를 만족시킬 수 있다.
 
-### 3.1 저장소 운영 (Odoo/n8n과 동일)
+### 3.1 저장소 운영 (AppEngine/Auto와 동일)
 
 - **원본 소스 미포함**: AFFiNE 코드는 저장소에 두지 않고, **PolyON-Canvas 저장소에는 래퍼만** 둠.
   - Dockerfile: 공식 이미지 `ghcr.io/toeverything/affine` 베이스 + entrypoint·설정 주입
@@ -90,7 +90,7 @@ AFFiNE은 **local-first**로, 사용자 디스크·로컬 저장소를 전제로
 
 ## 4. 권장 다음 단계
 
-1. **PolyON-Canvas 래퍼 골격** (Odoo 스타일)
+1. **PolyON-Canvas 래퍼 골격** (AppEngine 스타일)
    - `Dockerfile`: `FROM ghcr.io/toeverything/affine:stable`, entrypoint, polyon-module 복사
    - `entrypoint.sh`: DB/Redis 준비 대기, (가능하면) OIDC/Storage 설정 주입 후 affine 기동
    - `polyon-module/module.yaml`: PRC claims(database, objectStorage, smtp, auth, redis 유무 반영) 및 env 매핑 초안
